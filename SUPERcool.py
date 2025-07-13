@@ -1,4 +1,13 @@
-import requests, win32gui
+from flask import Flask, request
+import win32gui
+
+app = Flask(__name__)
+
+def move_window_by_hwnd(hwnd, x, y, width, height):
+    if hwnd == 0 or hwnd is None:
+        return "Window not found", 404
+    win32gui.MoveWindow(hwnd, x, y, width, height, True)
+    return "Window moved", 200
 
 def find_roblox_studio_window():
     results = []
@@ -10,24 +19,15 @@ def find_roblox_studio_window():
     win32gui.EnumWindows(enum_windows, results)
     return results[0] if results else None
 
-def move_window(hwnd, x, y, width, height):
-    if not hwnd:
-        print("Window not found.")
-        return
-    win32gui.MoveWindow(hwnd, x, y, width, height, True)
-    print(f"Moved window to ({x},{y}) size {width}x{height}")
-
-raw_url = "https://raw.githubusercontent.com/fatalYAYAY/doin-stuff/refs/heads/main/windowMover.json"
-
-try:
-    data = requests.get(raw_url).json()
+@app.route('/moveWindow', methods=['POST'])
+def move_window():
+    data = request.get_json()
+    x = data.get('x')
+    y = data.get('y')
+    width = data.get('width', 1280)
+    height = data.get('height', 720)
     hwnd = find_roblox_studio_window()
-    move_window(
-        hwnd,
-        data.get("x", 100),
-        data.get("y", 100),
-        data.get("width", 1280),
-        data.get("height", 720)
-    )
-except Exception as e:
-    print("Error:", e)
+    return move_window_by_hwnd(hwnd, x, y, width, height)
+
+if __name__ == "__main__":
+    app.run(port=1337)
