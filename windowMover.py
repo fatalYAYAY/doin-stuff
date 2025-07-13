@@ -17,7 +17,6 @@ def move_window(hwnd, x, y, width, height):
     win32gui.MoveWindow(hwnd, x, y, width, height, True)
     print(f"Moved window to ({x},{y}) size {width}x{height}")
 
-# 👇 just replace this with your GitHub raw URL
 raw_url = "https://raw.githubusercontent.com/youruser/yourrepo/main/position.json"
 
 try:
