@@ -17,7 +17,7 @@ def move_window(hwnd, x, y, width, height):
     win32gui.MoveWindow(hwnd, x, y, width, height, True)
     print(f"Moved window to ({x},{y}) size {width}x{height}")
 
-raw_url = "https://raw.githubusercontent.com/youruser/yourrepo/main/position.json"
+raw_url = "https://raw.githubusercontent.com/fatalYAYAY/doin-stuff/refs/heads/main/windowMover.json"
 
 try:
     data = requests.get(raw_url).json()
